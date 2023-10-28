@@ -1,0 +1,17 @@
+{
+  "name": "broken-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest --testEnvironment=node --verbose --detectOpenHandles "
+  },
+  "author": "Xavier Rivera",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "express": "^4.18.2",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3"
+  }
+}
