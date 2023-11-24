@@ -20,39 +20,20 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-// const getJob_ = async (filters, values) => {
-//   let job = await Job.search(filters, values);
-//   console.log("INSIDETHISS", job[0]);
-//   return job[0];
-// };
-
-async function getJob_(filters, values) {
+const getJob_ = async (filters, values) => {
   let job = await Job.search(filters, values);
-  console.log("INSIDE", job);
-  return job;
-}
+  console.log("INSIDETHISS", job[0]);
+  return job[0];
+};
 
-const promises = [];
-// const testJob1 = getJob_(["title = $1"], ["j1"]);
+// async function getJob_(filters, values) {
+//   let job = await Job.search(filters, values);
+//   console.log("INSIDE", job);
+//   return job;
+// }
+
 const testJob1 = getJob_(["title = $1"], ["j1"]);
 const testJob2 = getJob_(["title = $1"], ["j2"]);
-// console.log("End");
-promises.push(testJob1, testJob2);
-
-// const testJob1 = getJob(["title = $1"], ["j1"]);
-console.log(promises);
-console.log("THISJOB", testJob1);
-// const testJob2 = getJob("title", "j2");
-
-// console.log(testJob1);
-
-// let testJob1;
-
-// async function getJob() {
-//   testJob1 = await Job.search("title", "j1");
-//   return testJob1;
-// }
-// getJob();
 
 /************************************** POST /jobs */
 
