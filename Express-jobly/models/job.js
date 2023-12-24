@@ -89,7 +89,6 @@ class Job {
    * Throws NotFoundError if none found.
    * */
   static async search(filters, values) {
-    console.log(filters, values);
     if (filters.length > 1) {
       console.log("WWWHHHYY");
       const jobRes = await db.query(
@@ -106,7 +105,7 @@ class Job {
       if (jobs.length === 0) throw new NotFoundError(`No company found`);
       return jobs;
     }
-    console.log("YYYYESSSS");
+
     const jobRes = await db.query(
       `SELECT id,
                 title,

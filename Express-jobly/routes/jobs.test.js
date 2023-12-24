@@ -22,18 +22,17 @@ afterAll(commonAfterAll);
 
 const getJob_ = async (filters, values) => {
   let job = await Job.search(filters, values);
-  console.log("INSIDETHISS", job[0]);
+  console.log(job);
   return job[0];
 };
 
-// async function getJob_(filters, values) {
-//   let job = await Job.search(filters, values);
-//   console.log("INSIDE", job);
-//   return job;
-// }
+getJob_(["title = $1"], ["j1"]).then((res) => {
+  console.log("RES:", res);
+  return res;
+});
 
-const testJob1 = getJob_(["title = $1"], ["j1"]);
-const testJob2 = getJob_(["title = $1"], ["j2"]);
+// let testJob2;
+// getJob_(["title = $1"], ["j2"]);
 
 /************************************** POST /jobs */
 
@@ -95,14 +94,14 @@ describe("GET /jobs", function () {
     expect(resp.body).toEqual({
       jobs: [
         {
-          id: `${testJob1.id}`,
+          id: 1,
           title: "j1",
           salary: 1000,
           equity: "0",
           companyHandle: "c1",
         },
         {
-          id: `${testJob2.id}`,
+          id: 2,
           title: "j2",
           salary: 2000,
           equity: "0",
@@ -117,9 +116,10 @@ describe("GET /jobs", function () {
 
 describe("GET /jobs/:id", function () {
   test("works for anon", async function () {
-    const resp = await request(app).get(`/jobs/${testJob1.id}`);
+    const resp = await request(app).get(`/jobs/1`);
     expect(resp.body).toEqual({
       jobs: {
+        id: 1,
         title: "j1",
         salary: 1000,
         equity: "0",
@@ -139,14 +139,14 @@ describe("GET /jobs/:id", function () {
 describe("PATCH /jobs/:id", function () {
   test("works for admins", async function () {
     const resp = await request(app)
-      .patch(`/jobs/${testJob1.id}`)
+      .patch(`/jobs/1`)
       .send({
         title: "J1-new",
       })
       .set("authorization", `Bearer ${u3Token}`);
     expect(resp.body).toEqual({
       job: {
-        id: 4,
+        id: 1,
         title: "J1-new",
         salary: 1000,
         equity: "0",
@@ -156,7 +156,7 @@ describe("PATCH /jobs/:id", function () {
   });
 
   test("unauth for anon", async function () {
-    const resp = await request(app).patch(`/jobs/${testJob1.id}`).send({
+    const resp = await request(app).patch(`/jobs/1`).send({
       title: "J1-new",
     });
     expect(resp.statusCode).toEqual(401);
@@ -164,7 +164,7 @@ describe("PATCH /jobs/:id", function () {
 
   test("unauth for normal user", async function () {
     const resp = await request(app)
-      .patch(`/jobs/${testJob1.id}`)
+      .patch(`/jobs/1`)
       .send({
         title: "J1-new",
       })
@@ -174,7 +174,7 @@ describe("PATCH /jobs/:id", function () {
 
   test("bad request on invalid data", async function () {
     const resp = await request(app)
-      .patch(`jobs/${testJob1.id}`)
+      .patch(`jobs/1`)
       .send({
         salary: "alot",
       })
@@ -188,19 +188,19 @@ describe("PATCH /jobs/:id", function () {
 describe("DELETE /jobs/:id", function () {
   test("works for admins", async function () {
     const resp = await request(app)
-      .delete(`/jobs/${testJob1.id}`)
+      .delete(`/jobs/1`)
       .set("authorization", `Bearer ${u3Token}`);
     expect(resp.body).toEqual({ deleted: "j1" });
   });
 
   test("unauth for anon", async function () {
-    const resp = await request(app).delete(`/jobs/${testJob1.id}`);
+    const resp = await request(app).delete(`/jobs/1`);
     expect(resp.statusCode).toEqual(401);
   });
 
   test("unauth for normal users", async function () {
     const resp = await request(app)
-      .delete(`/jobs/${testJob1.id}`)
+      .delete(`/jobs/1`)
       .set("authorization", `Bearer ${u1Token}`);
     expect(resp.statusCode).toEqual(401);
   });

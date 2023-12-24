@@ -13,7 +13,7 @@ async function commonBeforeAll() {
   // noinspection SqlWithoutWhere
   await db.query("DELETE FROM companies");
 
-  await db.query("DELETE FROM jobs");
+  await db.query("DELETE FROM jobs where id > 2");
 
   await Company.create({
     handle: "c1",
@@ -87,15 +87,6 @@ async function commonAfterEach() {
 async function commonAfterAll() {
   await db.end();
 }
-
-// async function createJob() {
-//   await Job.create({
-//    title: "J1",
-//    salary: 1000,
-//    equity: 0,
-//    companyHandle: "c1",
-//  });
-// }
 
 const u1Token = createToken({ username: "u1", isAdmin: false });
 const u3Token = createToken({ username: "u3", isAdmin: true });
